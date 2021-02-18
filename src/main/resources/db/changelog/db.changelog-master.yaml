@@ -1,0 +1,35 @@
+databaseChangeLog:
+  - changeSet:
+      id: '0001-add-columns'
+      author: tnc
+      comments: 'Adding columns for parking_space'
+      changes:
+        - addColumn:
+            tableName: parking_space
+            columns:
+              - column:
+                  name: isFree
+                  type: boolean
+              - column:
+                  name: number
+                  type: Integer
+  - changeSet:
+      id: '0002-add-columns'
+      author: tnc
+      comments: 'Adding all columns for ticket'
+      changes:
+        - addColumn:
+            tableName: ticket
+            columns:
+              - column:
+                  name: created_date
+                  type: timestamp
+              - column:
+                  name: created_by
+                  type: varchar
+              - column:
+                  name: last_modified_date
+                  type: timestamp
+              - column:
+                  name: last_modified_by
+                  type: varchar
