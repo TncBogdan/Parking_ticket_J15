@@ -18,9 +18,9 @@ public class Ticket {
     private String code;
 
     @Range(min = 0, message = "Invalid payed amount")
-    private Integer paydAmount;
+    private Integer payAmount;
 
     private LocalDateTime enterDate;
     private LocalDateTime exitDate;
-    private LocalDateTime PayDate;
+    private LocalDateTime payDate;
 }
