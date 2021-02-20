@@ -18,7 +18,7 @@ public class TicketService {
         ticket.setEnterDate(LocalDateTime.now());
         ticket.setCode(generateTicketCode());
 
-        ticketRepository.save(ticket.getId());
+        ticketRepository.save(ticket);
         return ticket;
     }
 
