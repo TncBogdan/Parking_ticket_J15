@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: '01-add-columns for parking space db'
+      id: '1.0.0-add-columns for parking space db'
       author: tnc
       comments: 'Adding columns for parking_space'
       changes:
@@ -21,7 +21,7 @@ databaseChangeLog:
                   name: number
                   type: integer
   - changeSet:
-      id: '02-add-columns for ticket db'
+      id: '2.0.0-add-columns for ticket db'
       author: tnc
       comments: 'Adding all columns for ticket'
       changes:

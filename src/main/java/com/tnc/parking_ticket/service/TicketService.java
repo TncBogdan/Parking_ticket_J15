@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TicketService {
@@ -16,13 +17,18 @@ public class TicketService {
 
     Ticket ticket = new Ticket();
 
-    public Ticket getTicket() {
+    public Ticket createTicket() {
         var ticket = new Ticket();
         ticket.setEnterDate(LocalDateTime.now());
         ticket.setCode(generateTicketCode());
 
         ticketRepository.save(ticket);
         return ticket;
+    }
+
+    public Ticket findById(Long id) {
+        Optional<Ticket> findOne = ticketRepository.findById(id);
+        return findOne.orElseThrow();
     }
 
     public List<Ticket> findAll() {
@@ -42,4 +48,5 @@ public class TicketService {
     private String generateTicketCode() {
         return "T" + (Math.floor(Math.random() * 9_000_000_000L) + 1_000_000_000);
     }
+
 }

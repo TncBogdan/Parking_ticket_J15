@@ -14,7 +14,6 @@ public class ParkingSpace {
     private Long id;
 
     private boolean isFree;
-
     private Integer number;
 
 

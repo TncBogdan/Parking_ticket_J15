@@ -15,9 +15,14 @@ public class TicketController {
     @Autowired
     TicketService ticketService;
 
+    @RequestMapping(value = "/ticket", method = RequestMethod.GET)
+    public Ticket createOneTicket() {
+        return ticketService.createTicket();
+    }
+
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public Ticket getOne() {
-        return ticketService.getTicket();
+    public void getById(Long id){
+        ticketService.findById(id);
     }
 
     @RequestMapping(value = "/getAll")
@@ -27,6 +32,6 @@ public class TicketController {
 
     @RequestMapping(value = "/pay/{id}")
     public void pay(){
-        ticketService.payTicket(getOne().getId());
+        ticketService.payTicket(createOneTicket().getId());
     }
 }
