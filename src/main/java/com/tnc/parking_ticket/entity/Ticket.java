@@ -22,5 +22,5 @@ public class Ticket {
 
     private LocalDateTime enterDate;
     private LocalDateTime exitDate;
-    private LocalDateTime payDate;
+    private boolean isPaid;
 }

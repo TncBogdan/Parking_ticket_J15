@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: '0003-add-columns for parking space db'
+      id: '01-add-columns for parking space db'
       author: tnc
       comments: 'Adding columns for parking_space'
       changes:
@@ -8,19 +8,33 @@ databaseChangeLog:
             tableName: parking_space
             columns:
               - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
                   name: is_Free
                   type: boolean
               - column:
                   name: number
                   type: integer
   - changeSet:
-      id: '0004-add-columns for ticket db'
+      id: '02-add-columns for ticket db'
       author: tnc
       comments: 'Adding all columns for ticket'
       changes:
         - addColumn:
             tableName: ticket
             columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
               - column:
                   name: code
                   type: varchar
@@ -34,5 +48,7 @@ databaseChangeLog:
                   name: exit_date
                   type: timestamp
               - column:
-                  name: pay_date
-                  type: timestamp
+                  name: is_paid
+                  type: boolean
+
+
