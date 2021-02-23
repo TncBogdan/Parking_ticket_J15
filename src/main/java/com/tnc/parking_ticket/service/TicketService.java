@@ -18,8 +18,6 @@ public class TicketService {
     Ticket ticket = new Ticket();
 
     public Ticket createTicket() {
-
-        var ticket = new Ticket();
         ticket.setEnterDate(LocalDateTime.now());
         ticket.setCode(generateTicketCode());
 
@@ -28,9 +26,7 @@ public class TicketService {
     }
 
     public Optional<Ticket> findById(Long id) {
-        var getId = ticketRepository.getById(id);
-        return getId;
-
+        return ticketRepository.getById(id);
     }
 
     public List<Ticket> findAll() {
@@ -38,17 +34,40 @@ public class TicketService {
     }
 
     public void payTicket(Long id) {
+        var ticketId = ticketRepository.getOne(id);
+        ticketId.setExitDate(LocalDateTime.now());
+        var isPaid = ticket.isPaid();
 
-        ticketRepository.getOne(ticket.getId());
+        var getEnterHour = ticketId.getEnterDate().getMinute();
+        var getExitHour = ticketId.getExitDate().getMinute();
 
-        ticketRepository.deleteById(id);
+        var timeResult = calculateParkingTime(getExitHour, getEnterHour);
 
-        System.out.println("Ticket " + id + "exit from parking.");
+        System.out.println("TimeResult is: " + timeResult);
+
+        if (timeResult < 60) {
+            ticket.setPayAmount(2);
+            System.out.println(" 2 lei");
+            isPaid = true;
+        } else if (timeResult > 60) {
+            ticket.setPayAmount(4);
+            System.out.println(" 4 lei");
+            isPaid = true;
+        }
+
+
+        System.out.println(ticketId);
+
+        System.out.println("Ticket " + id + " exit from parking.");
     }
-
 
     private String generateTicketCode() {
         return "T" + (Math.floor(Math.random() * 9_000_000_000L) + 1_000_000_000);
+    }
+
+    public int calculateParkingTime(int getEnter, int getExit) {
+        return getExit - getEnter;
+
     }
 
 }

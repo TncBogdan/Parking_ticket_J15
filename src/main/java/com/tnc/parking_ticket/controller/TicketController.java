@@ -33,8 +33,8 @@ public class TicketController {
         return ticketService.findAll();
     }
 
-    @RequestMapping(value = "/pay/{id}")
-    public void pay() {
-        ticketService.payTicket(createOneTicket().getId());
+    @RequestMapping(value = "/ticket/pay/{id}")
+    public void pay(@PathVariable Long id) {
+        ticketService.payTicket(id);
     }
 }
