@@ -13,11 +13,12 @@ import java.util.Optional;
 public class TicketService {
 
     @Autowired
-    TicketRepository ticketRepository;
+    private TicketRepository ticketRepository;
 
     Ticket ticket = new Ticket();
 
     public Ticket createTicket() {
+
         var ticket = new Ticket();
         ticket.setEnterDate(LocalDateTime.now());
         ticket.setCode(generateTicketCode());
@@ -26,16 +27,17 @@ public class TicketService {
         return ticket;
     }
 
-    public Ticket findById(Long id) {
-        Optional<Ticket> findOne = ticketRepository.findById(id);
-        return findOne.orElseThrow();
+    public Optional<Ticket> findById(Long id) {
+        var getId = ticketRepository.getById(id);
+        return getId;
+
     }
 
     public List<Ticket> findAll() {
         return ticketRepository.findAll();
     }
 
-    public void  payTicket(Long id){
+    public void payTicket(Long id) {
 
         ticketRepository.getOne(ticket.getId());
 
