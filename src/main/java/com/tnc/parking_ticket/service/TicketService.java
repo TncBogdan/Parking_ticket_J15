@@ -5,6 +5,7 @@ import com.tnc.parking_ticket.repository.TicketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -33,41 +34,44 @@ public class TicketService {
         return ticketRepository.findAll();
     }
 
-    public void payTicket(Long id) {
-        var ticketId = ticketRepository.getOne(id);
-        ticketId.setExitDate(LocalDateTime.now());
-        var isPaid = ticket.isPaid();
+    public String calculateTicketPayment(Long id) {
+        var ticketToPay = ticketRepository.getOne(id);
+        ticketToPay.setExitDate(LocalDateTime.now());
 
-        var getEnterHour = ticketId.getEnterDate().getMinute();
-        var getExitHour = ticketId.getExitDate().getMinute();
+        var calculateParkingTime = Duration.between(ticketToPay.getEnterDate(), ticketToPay.getExitDate()).toMinutes();
 
-        var timeResult = calculateParkingTime(getExitHour, getEnterHour);
+        setAmount(ticketToPay, calculateParkingTime);
 
-        System.out.println("TimeResult is: " + timeResult);
+        System.out.println(ticketToPay);
 
-        if (timeResult < 60) {
-            ticket.setPayAmount(2);
-            System.out.println(" 2 lei");
-            isPaid = true;
-        } else if (timeResult > 60) {
-            ticket.setPayAmount(4);
-            System.out.println(" 4 lei");
-            isPaid = true;
-        }
+        System.out.println("Time is: " + calculateParkingTime + " minutes.");
+        System.out.println("Your payment is " + ticketToPay.getPayAmount() + " lei.");
+//        System.out.println("Ticket " + id + " exit from parking.");
 
-
-        System.out.println(ticketId);
-
-        System.out.println("Ticket " + id + " exit from parking.");
+        return ticketToPay.getCode();
     }
 
     private String generateTicketCode() {
         return "T" + (Math.floor(Math.random() * 9_000_000_000L) + 1_000_000_000);
     }
 
-    public int calculateParkingTime(int getEnter, int getExit) {
-        return getExit - getEnter;
+    public void setAmount(Ticket ticketId, long timeResult) {
 
+        if (timeResult <= 60) {
+            ticketId.setPayAmount(2);
+//            System.out.println(" 2 lei");
+        } else if (timeResult <= 120) {
+            ticketId.setPayAmount(4);
+//            System.out.println(" 4 lei");
+        } else if (timeResult <= 180) {
+            ticketId.setPayAmount(6);
+//            System.out.println(" 6 lei");
+        } else if (timeResult <= 240) {
+            ticketId.setPayAmount(8);
+        } else if (timeResult <= 300) {
+            ticketId.setPayAmount(10);
+        } else {
+            ticketId.setPayAmount(15);
+        }
     }
-
 }
