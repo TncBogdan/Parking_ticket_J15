@@ -34,7 +34,7 @@ public class TicketService {
         return ticketRepository.findAll();
     }
 
-    public String calculateTicketPayment(Long id) {
+    public void calculateTicketPayment(Long id) throws Exception {
         var ticketToPay = ticketRepository.getOne(id);
         ticketToPay.setExitDate(LocalDateTime.now());
 
@@ -42,13 +42,20 @@ public class TicketService {
 
         setAmount(ticketToPay, calculateParkingTime);
 
-        System.out.println(ticketToPay);
+        validateTicket(ticketToPay);
 
+        ticketRepository.save(ticketToPay);
+
+        System.out.println(ticketToPay);
         System.out.println("Time is: " + calculateParkingTime + " minutes.");
         System.out.println("Your payment is " + ticketToPay.getPayAmount() + " lei.");
-//        System.out.println("Ticket " + id + " exit from parking.");
+        payTicket(ticketToPay, id);
+    }
 
-        return ticketToPay.getCode();
+    public void payTicket(Ticket ticketToPay, Long id) {
+        if (ticketToPay.isPaid()) {
+            System.out.println("Ticket " + id + " exit from parking.");
+        }
     }
 
     private String generateTicketCode() {
@@ -72,6 +79,15 @@ public class TicketService {
             ticketId.setPayAmount(10);
         } else {
             ticketId.setPayAmount(15);
+        }
+    }
+
+    public void validateTicket(Ticket ticketValidator) throws Exception {
+        if (ticketValidator.isPaid()) {
+            throw new Exception("Invalid ticket!");
+
+        } else {
+            ticketValidator.setPaid(true);
         }
     }
 }

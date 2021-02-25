@@ -34,7 +34,7 @@ public class TicketController {
     }
 
     @RequestMapping(value = "/ticket/pay/{id}")
-    public void pay(@PathVariable Long id) {
+    public void pay(@PathVariable Long id) throws Exception {
         ticketService.calculateTicketPayment(id);
     }
 }
