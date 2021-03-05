@@ -1,4 +1,4 @@
-package com.tnc.parking_ticket.entity;
+package com.tnc.parking_ticket.repository.entity;
 
 import lombok.Data;
 
@@ -19,4 +19,5 @@ public class Ticket {
     private LocalDateTime enterDate;
     private LocalDateTime exitDate;
     private boolean isPaid;
+
 }

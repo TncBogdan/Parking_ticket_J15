@@ -1,4 +1,4 @@
-package com.tnc.parking_ticket.dto;
+package com.tnc.parking_ticket.controller.dto;
 
 import java.time.LocalDateTime;
 

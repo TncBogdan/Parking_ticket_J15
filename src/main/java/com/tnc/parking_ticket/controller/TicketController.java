@@ -1,6 +1,6 @@
 package com.tnc.parking_ticket.controller;
 
-import com.tnc.parking_ticket.entity.Ticket;
+import com.tnc.parking_ticket.repository.entity.Ticket;
 import com.tnc.parking_ticket.service.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,8 +24,7 @@ public class TicketController {
 
     @RequestMapping(value = "/ticket/{id}", method = RequestMethod.GET)
     public Optional<Ticket> getById(@PathVariable Long id) {
-        var getTicket = ticketService.findById(id);
-        return getTicket;
+        return ticketService.findById(id);
     }
 
     @RequestMapping(value = "/ticket/getAll")
@@ -34,7 +33,7 @@ public class TicketController {
     }
 
     @RequestMapping(value = "/ticket/pay/{id}")
-    public void pay(@PathVariable Long id) throws Exception {
+    public void pay(@PathVariable Long id) {
         ticketService.calculateTicketPayment(id);
     }
 }

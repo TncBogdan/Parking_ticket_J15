@@ -1,7 +1,7 @@
 package com.tnc.parking_ticket.service;
 
-import com.tnc.parking_ticket.entity.Ticket;
 import com.tnc.parking_ticket.repository.TicketRepository;
+import com.tnc.parking_ticket.repository.entity.Ticket;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,22 +34,29 @@ public class TicketService {
         return ticketRepository.findAll();
     }
 
-    public void calculateTicketPayment(Long id) throws Exception {
+    public Ticket setNewTicket(Long id) {
         var ticketToPay = ticketRepository.getOne(id);
         ticketToPay.setExitDate(LocalDateTime.now());
+        return ticketToPay;
+    }
 
-        var calculateParkingTime = Duration.between(ticketToPay.getEnterDate(), ticketToPay.getExitDate()).toMinutes();
+    public void calculateTicketPayment(Long id) {
 
-        setAmount(ticketToPay, calculateParkingTime);
+        setNewTicket(id);
 
-        validateTicket(ticketToPay);
+        var calculateParkingTime = Duration.between(setNewTicket(id).getEnterDate(), setNewTicket(id).getExitDate()).toMinutes();
 
-        ticketRepository.save(ticketToPay);
+        setAmount(setNewTicket(id), calculateParkingTime);
 
-        System.out.println(ticketToPay);
+        validateTicket(setNewTicket(id));
+
+        ticketRepository.save(setNewTicket(id));
+
+        System.out.println(setNewTicket(id));
+
         System.out.println("Time is: " + calculateParkingTime + " minutes.");
-        System.out.println("Your payment is " + ticketToPay.getPayAmount() + " lei.");
-        payTicket(ticketToPay, id);
+        System.out.println("Your payment is " + setNewTicket(id).getPayAmount() + " lei.");
+        payTicket(setNewTicket(id), id);
     }
 
     public void payTicket(Ticket ticketToPay, Long id) {
@@ -66,13 +73,10 @@ public class TicketService {
 
         if (timeResult <= 60) {
             ticketId.setPayAmount(2);
-//            System.out.println(" 2 lei");
         } else if (timeResult <= 120) {
             ticketId.setPayAmount(4);
-//            System.out.println(" 4 lei");
         } else if (timeResult <= 180) {
             ticketId.setPayAmount(6);
-//            System.out.println(" 6 lei");
         } else if (timeResult <= 240) {
             ticketId.setPayAmount(8);
         } else if (timeResult <= 300) {
@@ -82,12 +86,15 @@ public class TicketService {
         }
     }
 
-    public void validateTicket(Ticket ticketValidator) throws Exception {
-        if (ticketValidator.isPaid()) {
-            throw new Exception("Invalid ticket!");
-
-        } else {
-            ticketValidator.setPaid(true);
+    public void validateTicket(Ticket ticketValidator) {
+        try {
+            if (ticketValidator.isPaid()) {
+                throw new IllegalArgumentException("Invalid ticket!");
+            } else {
+                ticketValidator.setPaid(true);
+            }
+        } catch (IllegalArgumentException e) {
+            System.out.println("The ticket was paid.");
         }
     }
 }

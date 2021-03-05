@@ -1,4 +1,4 @@
-package com.tnc.parking_ticket.entity;
+package com.tnc.parking_ticket.repository.entity;
 
 import lombok.Data;
 
