@@ -40,7 +40,7 @@ public class TicketService {
         return ticketToPay;
     }
 
-    public void calculateTicketPayment(Long id) {
+    public void payTicket(Long id) {
 
         setNewTicket(id);
 
@@ -48,12 +48,20 @@ public class TicketService {
 
         setAmount(setNewTicket(id), calculateParkingTime);
 
-        ticketRepository.save(setNewTicket(id));
+        try {
+            if (setNewTicket(id).isPaid()) {
+                throw new IllegalArgumentException();
+            } else {
+                setNewTicket(id).setPaid(true);
+                System.out.println(setNewTicket(id));
+                System.out.println("Time is: " + calculateParkingTime + " minutes.");
+                System.out.println("Your payment is " + setNewTicket(id).getPayAmount() + " lei.");
+            }
+        } catch (IllegalArgumentException e) {
+            System.out.println("The ticket was paid.");
+        }
 
-//        System.out.println(setNewTicket(id));
-        System.out.println("Time is: " + calculateParkingTime + " minutes.");
-        System.out.println("Your payment is " + setNewTicket(id).getPayAmount() + " lei.");
-        validateTicket(setNewTicket(id));
+        ticketRepository.save(setNewTicket(id));
     }
 
     private String generateTicketCode() {
@@ -74,18 +82,6 @@ public class TicketService {
             ticketId.setPayAmount(10);
         } else {
             ticketId.setPayAmount(15);
-        }
-    }
-
-    public void validateTicket(Ticket ticketValidator) {
-        try {
-            if (ticketValidator.isPaid()) {
-                throw new IllegalArgumentException("Invalid ticket!");
-            } else {
-                ticketValidator.setPaid(true);
-            }
-        } catch (IllegalArgumentException e) {
-            System.out.println("The ticket was paid.");
         }
     }
 }

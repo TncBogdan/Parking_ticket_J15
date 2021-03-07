@@ -34,6 +34,6 @@ public class TicketController {
 
     @GetMapping ("/ticket/pay/{id}")
     public void pay(@PathVariable Long id) {
-        ticketService.calculateTicketPayment(id);
+        ticketService.payTicket(id);
     }
 }
