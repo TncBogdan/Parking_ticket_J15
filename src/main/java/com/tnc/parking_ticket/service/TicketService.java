@@ -48,21 +48,12 @@ public class TicketService {
 
         setAmount(setNewTicket(id), calculateParkingTime);
 
-        validateTicket(setNewTicket(id));
-
         ticketRepository.save(setNewTicket(id));
 
-        System.out.println(setNewTicket(id));
-
+//        System.out.println(setNewTicket(id));
         System.out.println("Time is: " + calculateParkingTime + " minutes.");
         System.out.println("Your payment is " + setNewTicket(id).getPayAmount() + " lei.");
-        payTicket(setNewTicket(id), id);
-    }
-
-    public void payTicket(Ticket ticketToPay, Long id) {
-        if (ticketToPay.isPaid()) {
-            System.out.println("Ticket " + id + " exit from parking.");
-        }
+        validateTicket(setNewTicket(id));
     }
 
     private String generateTicketCode() {

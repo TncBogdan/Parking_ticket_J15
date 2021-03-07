@@ -3,9 +3,9 @@ package com.tnc.parking_ticket.controller;
 import com.tnc.parking_ticket.repository.entity.Ticket;
 import com.tnc.parking_ticket.service.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -17,22 +17,22 @@ public class TicketController {
     @Autowired
     TicketService ticketService;
 
-    @RequestMapping(value = "/ticket", method = RequestMethod.GET)
+    @PostMapping("/ticket")
     public Ticket createOneTicket() {
         return ticketService.createTicket();
     }
 
-    @RequestMapping(value = "/ticket/{id}", method = RequestMethod.GET)
+    @GetMapping ("/ticket/{id}")
     public Optional<Ticket> getById(@PathVariable Long id) {
         return ticketService.findById(id);
     }
 
-    @RequestMapping(value = "/ticket/getAll")
+    @GetMapping ("/ticket/getAll")
     public List<Ticket> getAll() {
         return ticketService.findAll();
     }
 
-    @RequestMapping(value = "/ticket/pay/{id}")
+    @GetMapping ("/ticket/pay/{id}")
     public void pay(@PathVariable Long id) {
         ticketService.calculateTicketPayment(id);
     }
