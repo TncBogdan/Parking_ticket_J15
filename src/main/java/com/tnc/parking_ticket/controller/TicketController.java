@@ -16,7 +16,7 @@ public class TicketController {
     @Autowired
     private TicketService ticketService;
 
-    @GetMapping("/ticket")   //@PostMapping don`t work
+    @GetMapping("/ticket")
     public Ticket createOneTicket() {
         return ticketService.createTicket();
     }
